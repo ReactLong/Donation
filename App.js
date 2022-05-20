@@ -1,172 +1,53 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native'
-import React from 'react'
-import { StatusBar } from 'expo-status-bar'
-import { RadioButton } from 'react-native-paper'
+import * as React from 'react'
+import { Text, View, StyleSheet } from 'react-native'
+import Constants from 'expo-constants'
+
+// You can import from local files
+import AssetExample from './src/AssetExample'
+
+import { Card } from 'react-native-paper'
+import NumberPlease from 'react-native-number-please'
 
 export default function App() {
-  const [checked, setChecked] = React.useState(false)
-  const [amount, setAmount] = React.useState(1000)
-  const [donateAmount, setDonateAmount] = React.useState(500)
-  const [donated, setDonated] = React.useState(0)
+  const order = [
+    { id: 'pizza', label: '🍕', min: 0, max: 99 },
+    { id: 'slurp', label: '🥤', min: 0, max: 99 },
+  ]
 
-  const handleChecked = () => {
-    setChecked((checked) => !checked)
-  }
+  const initialOrder = [
+    { id: 'pizza', value: 3 },
+    { id: 'slurp', value: 4 },
+  ]
 
-  const handleDonate = () => {
-    setDonated((donated) => donated + donateAmount)
-  }
+  const [orderValues, setOrderValues] = React.useState(initialOrder)
 
-  function toNumber(str) {
-    if (str == '') return 0
-    return parseInt(str)
-  }
   return (
-    <>
-      <View style={styles.header}>
-        <Text style={styles.heading}>Donation 1.5</Text>
-      </View>
-      <View style={styles.container}>
-        {/* <StatusBar style="dark" /> */}
-        <View style={styles.app}>
-          <Text style={styles.heading}>Welcome Homer</Text>
-          <View style={styles.main}>
-            <View style={styles.mainLeft}>
-              <View style={styles.radioArea}>
-                <RadioButton
-                  value="first"
-                  status={checked ? 'checked' : 'unchecked'}
-                  onPress={() => setChecked((checked) => !checked)}
-                  style={styles.radio}
-                />
-                <Text style={styles.inlineText}>PayPal</Text>
-              </View>
-              <View style={styles.radioArea}>
-                <RadioButton
-                  value="first"
-                  status={checked ? 'checked' : 'unchecked'}
-                  onPress={() => setChecked((checked) => !checked)}
-                  style={styles.radio}
-                />
-                <Text style={styles.inlineText}>Direct</Text>
-              </View>
-            </View>
-            <View style={styles.mainRight}>
-              <Text>Number Picker</Text>
-              <TextInput
-                value={donateAmount}
-                onChangeText={(value) => setDonateAmount(toNumber(value))}
-                placeholder="enter your donate"
-                style={styles.donateInput}
-                autoFocus={true}
-              ></TextInput>
-            </View>
-          </View>
-          <View style={styles.appBottom}>
-            <View>
-              <Text>Progress bar {(donated / amount) * 100}%</Text>
-            </View>
-            <View style={styles.amountArea}>
-              <Text>Amounts</Text>
-              <TextInput
-                value={amount}
-                onChangeText={(value) => setAmount(toNumber(value))}
-                placeholder="enter your amount"
-                style={styles.amountInput}
-              ></TextInput>
-            </View>
-            <View style={styles.totalArea}>
-              <TouchableOpacity 
-                onPress={() => handleDonate()}
-                >
-                <Text style={styles.donateBtn}>Donate</Text>
-                 
-              </TouchableOpacity>
-              <Text>Total {donated}$</Text>
-            </View>
-          </View>
-        </View>
-        {/* <View style={styles.footer}>
-        <Text>footer</Text>
-      </View> */}
-      </View>
-    </>
+    <View style={styles.container}>
+      <Text style={styles.paragraph}>Number Please</Text>
+      <AssetExample></AssetExample>
+      <Card>
+        <NumberPlease
+          digits={order}
+          values={orderValues}
+          onChange={(nextValues) => setOrderValues(nextValues)}
+        />
+      </Card>
+    </View>
   )
-}
-
-const css = {
-  flexRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  input: {
-    padding: 4,
-    paddingLeft: 16,
-    paddingRight: 16,
-    borderWidth: 1,
-    borderRadius: 25,
-    borderColor: '#ff00bb',
-  },
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
-  },
-  header: {
-    backgroundColor: '#27ae60',
-    height: 40,
     justifyContent: 'center',
-    paddingLeft: 16,
+    paddingTop: Constants.statusBarHeight,
+    backgroundColor: '#ecf0f1',
+    padding: 8,
   },
-  app: {
-    flex: 1,
+  paragraph: {
+    margin: 24,
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
-  heading: {
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  main: {
-    flexDirection: 'row',
-    flex: 1,
-  },
-  mainLeft: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  mainRight: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  donateInput: {
-    ...css.input,
-    marginTop: 16,
-  },
-  radioArea: {
-    ...css.flexRow,
-  },
-  amountArea: {
-    ...css.flexRow,
-    height: 50,
-  },
-  amountInput: {
-    ...css.input,
-    flex: 1,
-    marginLeft: 16,
-  },
-  totalArea: {
-    ...css.flexRow,
-    justifyContent: 'space-between',
-    height: 50,
-  },
-  donateBtn: {
-    ...css.input
-  }
 })
