@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { View, Text, Button } from 'react-native'
+import { View, Text, Button, TouchableOpacity, StyleSheet } from 'react-native'
+
+import style from '../../assets/css/style.css'
+const styles = StyleSheet.create(style)
 
 export default function Report({ navigation }) {
   return (

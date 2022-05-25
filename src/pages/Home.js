@@ -9,8 +9,8 @@ import {
 import React from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { RadioButton } from 'react-native-paper'
-import { Entypo } from '@expo/vector-icons'
 import NumberPicker from '../components/NumberPicker'
+import Header from '../components/Header'
 
 import style from '../../assets/css/style.css'
 const styles = StyleSheet.create(style)
@@ -36,17 +36,7 @@ export default function Home({ navigation }) {
   return (
     <>
       {/* Header */}
-      <View style={styles.header}>
-        <Text style={styles.heading}>Donation 1.5</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('Report')}>
-          <Entypo
-            style={styles.paddingX16}
-            name="dots-three-vertical"
-            size={24}
-            color="black"
-          />
-        </TouchableOpacity>
-      </View>
+      <Header navigation={navigation}></Header>
 
       {/* Main app */}
       <View style={styles.container}>
