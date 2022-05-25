@@ -8,6 +8,7 @@ import {
 import React from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { RadioButton } from 'react-native-paper'
+import NumberPicker from './NumberPicker'
 
 export default function App() {
   const [checked, setChecked] = React.useState('paypal')
@@ -42,6 +43,7 @@ export default function App() {
           <View style={styles.main}>
             {/* Main left */}
             <View style={styles.mainLeft}>
+              <Text>Please Give Generously</Text>
               <View style={styles.radioArea}>
                 <RadioButton
                   value="first"
@@ -61,17 +63,12 @@ export default function App() {
                 <Text style={styles.inlineText}>Direct</Text>
               </View>
             </View>
-
             {/* Main right */}
             <View style={styles.mainRight}>
-              <Text>Number Picker</Text>
-              <TextInput
+              <NumberPicker
                 value={donateAmount}
                 onChangeText={(value) => setDonateAmount(toNumber(value))}
-                placeholder="enter your donate"
-                style={styles.donateInput}
-                autoFocus={true}
-              ></TextInput>
+              ></NumberPicker>
             </View>
           </View>
 
