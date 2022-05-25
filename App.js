@@ -3,7 +3,6 @@ import { Text, View, StyleSheet } from 'react-native'
 import Constants from 'expo-constants'
 
 // You can import from local files
-import AssetExample from './src/AssetExample'
 
 import { Card } from 'react-native-paper'
 import NumberPlease from 'react-native-number-please'
@@ -15,8 +14,8 @@ export default function App() {
   ]
 
   const initialOrder = [
-    { id: 'pizza', value: 3 },
-    { id: 'slurp', value: 4 },
+    { id: 'pizza', value: 99 },
+    { id: 'slurp', value: 99 },
   ]
 
   const [orderValues, setOrderValues] = React.useState(initialOrder)
@@ -24,7 +23,6 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Text style={styles.paragraph}>Number Please</Text>
-      <AssetExample></AssetExample>
       <Card>
         <NumberPlease
           digits={order}
