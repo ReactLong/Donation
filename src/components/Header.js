@@ -68,7 +68,7 @@ export default function Header({ navigation }) {
 
 const innerStyle = StyleSheet.create({
   dialogMenu: {
-    position: 'fixed',
+    position: 'absolute',
     top: 0,
     right: 0,
     zIndex: 10,

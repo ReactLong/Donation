@@ -6,29 +6,43 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { RadioButton } from 'react-native-paper'
 import { ProgressBar, Colors } from 'react-native-paper'
 import NumberPicker from '../components/NumberPicker'
 import Header from '../components/Header'
+import Selector from '../components/Selector'
 
 import style from '../../assets/css/style.css'
 const styles = StyleSheet.create(style)
 
 export default function Home({ navigation }) {
-  const [checked, setChecked] = React.useState('paypal')
-  const [amount, setAmount] = React.useState(1000)
-  const [donateAmount, setDonateAmount] = React.useState(0)
-  const [donated, setDonated] = React.useState(0)
+  const [checked, setChecked] = useState('paypal')
+  const [amount, setAmount] = useState(10000)
+  const [donateAmount, setDonateAmount] = useState(0)
+  const [donated, setDonated] = useState(0)
 
-  console.log(
-    `checked: ${checked}`,
-    `amount: ${amount}`,
-    `donateAmount: ${donateAmount}`,
-    `donated: ${donated}`
-  )
+  const config = {
+    min: 0,
+    max: 1000,
+    step: 50,
+  }
 
+  // init
+  useEffect(async () => {
+    const res = await fetch(
+      `https://62875b567864d2883e8388b6.mockapi.io/api/v1/Transaction`
+    )
+    const data = await res.json()
+    const donated = data.reduce(
+      (result, current) => result + Number(current.amount),
+      0
+    )
+    setDonated(donated)
+  }, [])
+
+  // handle api
   const handleDonate = () => {
     const body = {
       upvote: 0,
@@ -46,27 +60,23 @@ export default function Home({ navigation }) {
       .then((data) => setDonated((donated) => donated + donateAmount))
   }
 
+  // helper
   function toNumber(str) {
     if (str == '') return 0
     return parseInt(str)
   }
 
-  React.useEffect(async () => {
-    const res = await fetch(
-      `https://62875b567864d2883e8388b6.mockapi.io/api/v1/Transaction`
-    )
-    const data = await res.json()
-    const donated = data.reduce(
-      (result, current) => result + Number(current.amount),
-      0
-    )
-    setDonated(donated)
-  }, [])
+  console.log(
+    `checked: ${checked}`,
+    `amount: ${amount}`,
+    `donateAmount: ${donateAmount}`,
+    `donated: ${donated}`
+  )
+
   return (
     <>
       {/* Header */}
       <Header navigation={navigation}></Header>
-
       {/* Main app */}
       <View style={styles.container}>
         <StatusBar style="dark" />
@@ -97,7 +107,12 @@ export default function Home({ navigation }) {
             </View>
             {/* Main right */}
             <View style={styles.mainRight}>
-              <NumberPicker setDonateAmount={setDonateAmount}></NumberPicker>
+              <Selector
+                min={config.min}
+                max={config.max}
+                step={config.step}
+                setter={setDonateAmount}
+              ></Selector>
             </View>
           </View>
 
