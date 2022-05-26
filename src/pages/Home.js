@@ -23,19 +23,45 @@ export default function Home({ navigation }) {
   const [donated, setDonated] = React.useState(0)
 
   console.log(
+    `checked: ${checked}`,
     `amount: ${amount}`,
     `donateAmount: ${donateAmount}`,
     `donated: ${donated}`
   )
 
   const handleDonate = () => {
-    setDonated((donated) => donated + donateAmount)
+    const body = {
+      upvote: 0,
+      amount: donateAmount,
+      method: checked === 'paypal',
+    }
+    fetch(`https://62875b567864d2883e8388b6.mockapi.io/api/v1/Transaction`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    })
+      .then((res) => res.json())
+      .then((data) => setDonated((donated) => donated + donateAmount))
   }
 
   function toNumber(str) {
     if (str == '') return 0
     return parseInt(str)
   }
+
+  React.useEffect(async () => {
+    const res = await fetch(
+      `https://62875b567864d2883e8388b6.mockapi.io/api/v1/Transaction`
+    )
+    const data = await res.json()
+    const donated = data.reduce(
+      (result, current) => result + Number(current.amount),
+      0
+    )
+    setDonated(donated)
+  }, [])
   return (
     <>
       {/* Header */}
