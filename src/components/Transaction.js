@@ -8,7 +8,17 @@ const styles = StyleSheet.create(style)
 
 import Hr from './Hr'
 
-export default function Transaction({ navigation, item }) {
+export default function Transaction({ navigation, handleRerender, item }) {
+  function handleDelete() {
+    fetch(
+      `https://62875b567864d2883e8388b6.mockapi.io/api/v1/Transaction/${item.id}`,
+      {
+        method: 'DELETE',
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => handleRerender())
+  }
   return (
     <>
       <View
@@ -17,7 +27,7 @@ export default function Transaction({ navigation, item }) {
         <Text>{item.id}</Text>
         <Text>{item.amount}</Text>
         <Text>{item.method ? 'Paypal' : 'Direct'}</Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => handleDelete()}>
           <FontAwesome name="times" size={24} color="red" />
         </TouchableOpacity>
       </View>

@@ -40,7 +40,7 @@ export default function Home({ navigation }) {
 
       {/* Main app */}
       <View style={styles.container}>
-        {/* <StatusBar style="dark" /> */}
+        <StatusBar style="dark" />
         <View style={styles.app}>
           <Text style={styles.heading}>Welcome Homer</Text>
           <View style={styles.main}>

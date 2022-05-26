@@ -15,14 +15,17 @@ import style from '../../assets/css/style.css'
 const styles = StyleSheet.create(style)
 
 export default function Report({ navigation }) {
+  const [count, setCount] = useState(0)
+  const handleCount = () => {
+    setCount(count + 1)
+  }
   const [transactions, setTransactions] = useState([])
   useEffect(() => {
     fetch('https://62875b567864d2883e8388b6.mockapi.io/api/v1/Transaction')
       .then((res) => res.json())
       .then((data) => setTransactions(data))
-  }, [])
+  }, [count])
 
-  console.log(transactions)
   return (
     <>
       <Header navigation={navigation}></Header>
@@ -35,11 +38,14 @@ export default function Report({ navigation }) {
         <Text></Text>
       </View>
       <ScrollView>
-        <FlatList
-          data={transactions}
-          renderItem={Transaction}
-          keyExtractor={(item) => item.id}
-        />
+        {transactions.map((item, index) => (
+          <Transaction
+            handleRerender={handleCount}
+            navigation={navigation}
+            item={item}
+            key={index}
+          ></Transaction>
+        ))}
       </ScrollView>
     </>
   )

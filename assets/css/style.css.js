@@ -19,7 +19,6 @@ const style = {
     padding: 16,
   },
   header: {
-    marginTop: 40,
     flexDirection: 'row',
     backgroundColor: '#27ae60',
     height: 40,
@@ -84,12 +83,6 @@ const style = {
   },
   alignItemsCenter: {
     alignItems: 'center',
-  },
-  alignItemsBetween: {
-    alignItems: 'space-between',
-  },
-  alignItemsAround: {
-    alignItems: 'space-around',
   },
   paddingX4: {
     paddingLeft: 4,
