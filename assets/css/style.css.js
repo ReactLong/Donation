@@ -9,7 +9,7 @@ const css = {
     paddingRight: 16,
     borderWidth: 1,
     borderRadius: 25,
-    borderColor: '#ff00bb',
+    borderColor: '#27ae60',
   },
 }
 

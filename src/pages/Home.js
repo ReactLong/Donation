@@ -5,8 +5,10 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native'
 import React, { useState, useEffect } from 'react'
+import { useIsFocused } from '@react-navigation/native'
 import { StatusBar } from 'expo-status-bar'
 import { RadioButton } from 'react-native-paper'
 import { ProgressBar, Colors } from 'react-native-paper'
@@ -22,6 +24,9 @@ export default function Home({ navigation }) {
   const [amount, setAmount] = useState(10000)
   const [donateAmount, setDonateAmount] = useState(0)
   const [donated, setDonated] = useState(0)
+
+  const [isLoading, setLoading] = useState(false)
+  const isFocused = useIsFocused()
 
   const config = {
     min: 0,
@@ -40,10 +45,11 @@ export default function Home({ navigation }) {
       0
     )
     setDonated(donated)
-  }, [])
+  }, [isFocused])
 
-  // handle api
+  // handle donate
   const handleDonate = () => {
+    setLoading(true)
     const body = {
       upvote: 0,
       amount: donateAmount,
@@ -57,7 +63,10 @@ export default function Home({ navigation }) {
       body: JSON.stringify(body),
     })
       .then((res) => res.json())
-      .then((data) => setDonated((donated) => donated + donateAmount))
+      .then((data) => {
+        setLoading(false)
+        setDonated((donated) => donated + donateAmount)
+      })
   }
 
   // helper
@@ -119,7 +128,7 @@ export default function Home({ navigation }) {
           {/* App bottom */}
           <View style={styles.appBottom}>
             <View>
-              <ProgressBar progress={donated / amount} color={Colors.red800} />
+              <ProgressBar progress={donated / amount} color={'#27ae60'} />
             </View>
             <View style={styles.amountArea}>
               <Text>Amounts</Text>
@@ -132,15 +141,18 @@ export default function Home({ navigation }) {
             </View>
             <View style={styles.totalArea}>
               <TouchableOpacity onPress={() => handleDonate()}>
-                <Text style={styles.donateBtn}>Donate</Text>
+                <Text style={styles.donateBtn}>
+                  {isLoading ? (
+                    <ActivityIndicator size="small" color="#27ae60" />
+                  ) : (
+                    'Donate'
+                  )}
+                </Text>
               </TouchableOpacity>
-              <Text>Total {donated}$</Text>
+              <Text>Total so far ${amount - donated}</Text>
             </View>
           </View>
         </View>
-        {/* <View style={styles.footer}>
-        <Text>footer</Text>
-      </View> */}
       </View>
     </>
   )

@@ -21,19 +21,24 @@ export default function Header({ navigation }) {
 
   return (
     <>
+      {/* Left header logo */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-          <Text style={styles.heading}>Donation X.X</Text>
+          <Text style={[style.heading, innerStyle.whiteColor]}>
+            Donation 0.0
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={showDialog}>
           <Entypo
             style={styles.paddingX16}
             name="dots-three-vertical"
             size={24}
-            color="black"
+            color="#fff"
           />
         </TouchableOpacity>
       </View>
+
+      {/* Right menu dialog */}
       <View
         style={[{ display: visible ? 'block' : 'none' }, innerStyle.dialogMenu]}
       >
@@ -74,5 +79,8 @@ const innerStyle = StyleSheet.create({
     zIndex: 10,
     width: '30%',
     backgroundColor: '#fff',
+  },
+  whiteColor: {
+    color: '#fff',
   },
 })
