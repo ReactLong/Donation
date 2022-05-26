@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 import Home from './src/pages/Home'
+import Test from './src/pages/Test'
 import Report from './src/pages/Report'
 
 const Stack = createNativeStackNavigator()
@@ -12,13 +13,14 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Report"
+        initialRouteName="Home"
         screenOptions={{
           headerShown: false,
         }}
       >
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Report" component={Report} />
+        <Stack.Screen name="Test" component={Test} />
       </Stack.Navigator>
     </NavigationContainer>
   )

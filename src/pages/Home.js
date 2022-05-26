@@ -9,6 +9,7 @@ import {
 import React from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { RadioButton } from 'react-native-paper'
+import { ProgressBar, Colors } from 'react-native-paper'
 import NumberPicker from '../components/NumberPicker'
 import Header from '../components/Header'
 
@@ -18,12 +19,14 @@ const styles = StyleSheet.create(style)
 export default function Home({ navigation }) {
   const [checked, setChecked] = React.useState('paypal')
   const [amount, setAmount] = React.useState(1000)
-  const [donateAmount, setDonateAmount] = React.useState(500)
+  const [donateAmount, setDonateAmount] = React.useState(0)
   const [donated, setDonated] = React.useState(0)
 
-  const handleChecked = () => {
-    setChecked((checked) => !checked)
-  }
+  console.log(
+    `amount: ${amount}`,
+    `donateAmount: ${donateAmount}`,
+    `donated: ${donated}`
+  )
 
   const handleDonate = () => {
     setDonated((donated) => donated + donateAmount)
@@ -68,17 +71,14 @@ export default function Home({ navigation }) {
             </View>
             {/* Main right */}
             <View style={styles.mainRight}>
-              <NumberPicker
-                value={donateAmount}
-                onChangeText={(value) => setDonateAmount(toNumber(value))}
-              ></NumberPicker>
+              <NumberPicker setDonateAmount={setDonateAmount}></NumberPicker>
             </View>
           </View>
 
           {/* App bottom */}
           <View style={styles.appBottom}>
             <View>
-              <Text>Progress bar {(donated / amount) * 100}%</Text>
+              <ProgressBar progress={donated / amount} color={Colors.red800} />
             </View>
             <View style={styles.amountArea}>
               <Text>Amounts</Text>
