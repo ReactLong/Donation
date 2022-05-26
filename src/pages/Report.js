@@ -1,5 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { View, Text, Button, StyleSheet, FlatList } from 'react-native'
+import {
+  View,
+  ScrollView,
+  Text,
+  Button,
+  StyleSheet,
+  FlatList,
+} from 'react-native'
 
 import Header from '../components/Header'
 import Transaction from '../components/Transaction'
@@ -27,11 +34,13 @@ export default function Report({ navigation }) {
         <Text style={innerStyles.thead}>Method</Text>
         <Text></Text>
       </View>
-      <FlatList
-        data={transactions}
-        renderItem={Transaction}
-        keyExtractor={(item) => item.id}
-      />
+      <ScrollView>
+        <FlatList
+          data={transactions}
+          renderItem={Transaction}
+          keyExtractor={(item) => item.id}
+        />
+      </ScrollView>
     </>
   )
 }

@@ -14,7 +14,7 @@ export default function Transaction({ navigation, item }) {
       <View
         style={[styles.flexRow, styles.paddingY4, styles.justifyContentAround]}
       >
-        <Text>{item.upvote}</Text>
+        <Text>{item.id}</Text>
         <Text>{item.amount}</Text>
         <Text>{item.method ? 'Paypal' : 'Direct'}</Text>
         <TouchableOpacity>

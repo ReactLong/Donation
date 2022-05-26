@@ -7,7 +7,7 @@ const styles = StyleSheet.create(style)
 export default function Report({ navigation }) {
   return (
     <>
-      <View style={{ borderWidth: 1, borderColor: '#999' }}></View>
+      <View style={{ borderBottomWidth: 1, borderColor: '#999' }}></View>
     </>
   )
 }
