@@ -1,6 +1,5 @@
 import {
   StyleSheet,
-  Text,
   Button,
   View,
   TextInput,
@@ -10,7 +9,7 @@ import {
 import React, { useState, useEffect } from 'react'
 import { useIsFocused } from '@react-navigation/native'
 import { StatusBar } from 'expo-status-bar'
-import { RadioButton } from 'react-native-paper'
+import { RadioButton, Text } from 'react-native-paper'
 import { ProgressBar, Colors } from 'react-native-paper'
 import NumberPicker from '../components/NumberPicker'
 import Header from '../components/Header'
@@ -20,7 +19,7 @@ import style from '../../assets/css/style.css'
 const styles = StyleSheet.create(style)
 
 export default function Home({ navigation }) {
-  const [checked, setChecked] = useState('paypal')
+  const [checked, setChecked] = useState('PayPal')
   const [amount, setAmount] = useState(10000)
   const [donateAmount, setDonateAmount] = useState(0)
   const [donated, setDonated] = useState(0)
@@ -53,7 +52,7 @@ export default function Home({ navigation }) {
     const body = {
       upvote: 0,
       amount: donateAmount,
-      method: checked === 'paypal',
+      method: checked === 'PayPal',
     }
     fetch(`https://62875b567864d2883e8388b6.mockapi.io/api/v1/Transaction`, {
       method: 'POST',
@@ -95,24 +94,19 @@ export default function Home({ navigation }) {
             {/* Main left */}
             <View style={styles.mainLeft}>
               <Text>Please Give Generously</Text>
-              <View style={styles.radioArea}>
-                <RadioButton
-                  value="first"
-                  status={checked === 'paypal' ? 'checked' : 'unchecked'}
-                  onPress={() => setChecked((checked) => 'paypal')}
-                  style={styles.radio}
-                />
-                <Text style={styles.inlineText}>PayPal</Text>
-              </View>
-              <View style={styles.radioArea}>
-                <RadioButton
-                  value="first"
-                  status={checked === 'direct' ? 'checked' : 'unchecked'}
-                  onPress={() => setChecked((checked) => 'direct')}
-                  style={styles.radio}
-                />
-                <Text style={styles.inlineText}>Direct</Text>
-              </View>
+              <RadioButton.Group
+                onValueChange={(newValue) => setChecked(newValue)}
+                value={checked}
+              >
+                <View style={style.radioArea}>
+                  <RadioButton value="PayPal" style={styles.radio} />
+                  <Text>PayPal</Text>
+                </View>
+                <View style={style.radioArea}>
+                  <RadioButton value="Direct" style={styles.radio} />
+                  <Text>Direct</Text>
+                </View>
+              </RadioButton.Group>
             </View>
             {/* Main right */}
             <View style={styles.mainRight}>
