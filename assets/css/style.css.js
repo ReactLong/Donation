@@ -100,6 +100,11 @@ const style = {
     paddingTop: 16,
     paddingBottom: 16,
   },
+
+  borderBottom: {
+    borderBottomWidth: 1,
+    borderColor: '#999',
+  },
 }
 
 export default style
