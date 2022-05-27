@@ -10,21 +10,22 @@ import {
 
 import Header from '../components/Header'
 import Transaction from '../components/Transaction'
+import Hr from '../components/Hr'
 
 import style from '../../assets/css/style.css'
 const styles = StyleSheet.create(style)
 
 export default function Report({ navigation }) {
-  const [count, setCount] = useState(0)
-  const handleCount = () => {
-    setCount(count + 1)
+  const [rerender, setRerender] = useState(false)
+  const handleRerender = () => {
+    setRerender(!rerender)
   }
   const [transactions, setTransactions] = useState([])
   useEffect(() => {
     fetch('https://62875b567864d2883e8388b6.mockapi.io/api/v1/Transaction')
       .then((res) => res.json())
       .then((data) => setTransactions(data))
-  }, [count])
+  }, [rerender])
 
   return (
     <>
@@ -37,10 +38,11 @@ export default function Report({ navigation }) {
         <Text style={innerStyles.thead}>Method</Text>
         <Text></Text>
       </View>
+      <Hr></Hr>
       <ScrollView>
         {transactions.map((item, index) => (
           <Transaction
-            handleRerender={handleCount}
+            handleRerender={handleRerender}
             navigation={navigation}
             item={item}
             key={index}

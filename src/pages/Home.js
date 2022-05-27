@@ -25,7 +25,11 @@ export default function Home({ navigation }) {
   const [donated, setDonated] = useState(0)
 
   const [isLoading, setLoading] = useState(false)
+  const [rerender, setRerender] = useState(false)
   const isFocused = useIsFocused()
+  const handleRerender = () => {
+    setRerender(!rerender)
+  }
 
   const config = {
     min: 0,
@@ -44,7 +48,7 @@ export default function Home({ navigation }) {
       0
     )
     setDonated(donated)
-  }, [isFocused])
+  }, [isFocused, rerender])
 
   // handle donate
   const handleDonate = () => {
@@ -74,17 +78,19 @@ export default function Home({ navigation }) {
     return parseInt(str)
   }
 
-  console.log(
-    `checked: ${checked}`,
-    `amount: ${amount}`,
-    `donateAmount: ${donateAmount}`,
-    `donated: ${donated}`
-  )
+  useEffect(() => {
+    console.log(
+      `checked: ${checked}`,
+      `amount: ${amount}`,
+      `donateAmount: ${donateAmount}`,
+      `donated: ${donated}`
+    )
+  }, [donated])
 
   return (
     <>
       {/* Header */}
-      <Header navigation={navigation}></Header>
+      <Header navigation={navigation} handleRerender={handleRerender}></Header>
       {/* Main app */}
       <View style={styles.container}>
         <StatusBar style="dark" />

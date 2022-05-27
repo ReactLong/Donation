@@ -6,18 +6,52 @@ import {
   TouchableOpacity,
   TouchableHighlight,
   StyleSheet,
+  ActivityIndicator,
 } from 'react-native'
 import { Entypo } from '@expo/vector-icons'
 
 import style from '../../assets/css/style.css'
 const styles = StyleSheet.create(style)
 
-export default function Header({ navigation }) {
+export default function Header({ navigation, handleRerender }) {
   const [visible, setVisible] = React.useState(false)
+  const [isLoading, setLoading] = useState(false)
 
   const showDialog = () => setVisible(true)
-
   const hideDialog = () => setVisible(false)
+
+  // handle reset
+  const handleReset = async () => {
+    setLoading(true)
+    const res = await fetch(
+      'https://62875b567864d2883e8388b6.mockapi.io/api/v1/Transaction'
+    )
+    const transactions = await res.json()
+
+    // delete all
+    let count = transactions.length
+    if (count == 0) {
+      setLoading(false)
+      hideDialog()
+      return
+    }
+    transactions.forEach(async (transaction) => {
+      const deleteResponse = await fetch(
+        `https://62875b567864d2883e8388b6.mockapi.io/api/v1/Transaction/${transaction.id}`,
+        {
+          method: 'DELETE',
+        }
+      )
+      const data = await deleteResponse.json()
+      count--
+      console.log(data)
+      if (count == 0) {
+        setLoading(false)
+        hideDialog()
+        handleRerender()
+      }
+    })
+  }
 
   return (
     <>
@@ -52,9 +86,20 @@ export default function Header({ navigation }) {
         <TouchableHighlight
           style={[style.paddingX16, style.paddingY16, style.borderBottom]}
           underlayColor="#ddd"
-          onPress={hideDialog}
+          onPress={handleReset}
         >
-          <Text>Reset</Text>
+          <Text>
+            Reset{' '}
+            {isLoading ? (
+              <ActivityIndicator
+                style={styles.paddingX16}
+                size={15}
+                color="#27ae60"
+              />
+            ) : (
+              ''
+            )}
+          </Text>
         </TouchableHighlight>
         <TouchableHighlight
           style={[style.paddingX16, style.paddingY16, style.borderBottom]}
