@@ -53,8 +53,8 @@ export default function Header({ navigation, handleRerender, donated }) {
       if (count == 0) {
         setLoading(false)
         hideDialog()
-        setModalVisible(false)
         handleRerender()
+        setModalVisible(false)
       }
     })
   }
@@ -140,48 +140,50 @@ export default function Header({ navigation, handleRerender, donated }) {
       )}
 
       {/* Modal */}
-      <View style={styles.centeredView}>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            Alert.alert('Modal has been closed.')
-            setModalVisible(!modalVisible)
-          }}
-        >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text style={styles.modalText}>
-                Bạn muốn xóa toàn bộ giao dịch?
-              </Text>
-              <Text style={styles.modalText}>
-                Hành động này không thể khôi phục!
-              </Text>
-              <View style={[styles.flexRow]}>
-                <Pressable
-                  style={[
-                    styles.button,
-                    styles.buttonDanger,
-                    { marginRight: 50 },
-                  ]}
-                  onPress={() => handleReset()}
-                >
-                  <Text style={styles.textStyle}>Xóa</Text>
-                </Pressable>
-                <Pressable
-                  style={[styles.button, styles.buttonClose]}
-                  onPress={() => {
-                    setModalVisible(false)
-                    hideDialog()
-                  }}
-                >
-                  <Text style={styles.textStyle}>Hủy</Text>
-                </Pressable>
+      <View>
+        <View style={styles.centeredView}>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              Alert.alert('Modal has been closed.')
+              setModalVisible(!modalVisible)
+            }}
+          >
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <Text style={styles.modalText}>
+                  Bạn muốn xóa toàn bộ giao dịch?
+                </Text>
+                <Text style={styles.modalText}>
+                  Hành động này không thể khôi phục!
+                </Text>
+                <View style={[styles.flexRow]}>
+                  <Pressable
+                    style={[
+                      styles.button,
+                      styles.buttonDanger,
+                      { marginRight: 50 },
+                    ]}
+                    onPress={() => handleReset()}
+                  >
+                    <Text style={styles.textStyle}>Xóa</Text>
+                  </Pressable>
+                  <Pressable
+                    style={[styles.button, styles.buttonClose]}
+                    onPress={() => {
+                      setModalVisible(false)
+                      hideDialog()
+                    }}
+                  >
+                    <Text style={styles.textStyle}>Hủy</Text>
+                  </Pressable>
+                </View>
               </View>
             </View>
-          </View>
-        </Modal>
+          </Modal>
+        </View>
       </View>
     </>
   )

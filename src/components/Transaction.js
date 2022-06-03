@@ -41,8 +41,8 @@ export default function Transaction({ navigation, handleRerender, item }) {
       .then((res) => res.json())
       .then((data) => {
         setLoading(false)
-        setModalVisible(false)
         handleRerender()
+        setModalVisible(false)
       })
   }
   return (
