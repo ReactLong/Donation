@@ -20,7 +20,6 @@ const styles = StyleSheet.create(style)
 
 export default function Report({ navigation }) {
   const [rerender, setRerender] = useState(false)
-  const [modalVisible, setModalVisible] = useState(false)
 
   const handleRerender = () => {
     setRerender(!rerender)
@@ -53,36 +52,9 @@ export default function Report({ navigation }) {
             navigation={navigation}
             item={item}
             key={index}
-            setModalVisible={setModalVisible}
           ></Transaction>
         ))}
       </ScrollView>
-
-      {/* Modal */}
-      <View style={styles.centeredView}>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            Alert.alert('Modal has been closed.')
-            setModalVisible(!modalVisible)
-          }}
-        >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text style={styles.modalText}>Hello World!</Text>
-              <Pressable
-                style={[styles.button, styles.buttonClose]}
-                onPress={() => setModalVisible(!modalVisible)}
-              >
-                <Text style={styles.textStyle}>Hide Modal</Text>
-              </Pressable>
-            </View>
-          </View>
-        </Modal>
-        <Pressable style={[styles.button, styles.buttonOpen]}></Pressable>
-      </View>
     </>
   )
 }

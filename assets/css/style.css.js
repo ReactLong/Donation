@@ -1,7 +1,6 @@
 const css = {
   flexRow: {
     flexDirection: 'row',
-    alignItems: 'center',
   },
   flex1: {
     flex: 1,
@@ -116,7 +115,6 @@ const style = {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 22,
   },
   modalView: {
     margin: 20,
@@ -137,6 +135,9 @@ const style = {
     borderRadius: 20,
     padding: 10,
     elevation: 2,
+  },
+  buttonDanger: {
+    backgroundColor: '#c0392b',
   },
   buttonOpen: {
     backgroundColor: '#F194FF',

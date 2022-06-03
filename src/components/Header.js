@@ -7,6 +7,9 @@ import {
   TouchableHighlight,
   StyleSheet,
   ActivityIndicator,
+  Alert,
+  Modal,
+  Pressable,
 } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
 import { Entypo } from '@expo/vector-icons'
@@ -17,6 +20,7 @@ const styles = StyleSheet.create(style)
 export default function Header({ navigation, handleRerender, donated }) {
   const [visible, setVisible] = React.useState(false)
   const [isLoading, setLoading] = useState(false)
+  const [modalVisible, setModalVisible] = useState(false)
 
   const showDialog = () => setVisible(true)
   const hideDialog = () => setVisible(false)
@@ -49,6 +53,7 @@ export default function Header({ navigation, handleRerender, donated }) {
       if (count == 0) {
         setLoading(false)
         hideDialog()
+        setModalVisible(false)
         handleRerender()
       }
     })
@@ -103,7 +108,7 @@ export default function Header({ navigation, handleRerender, donated }) {
             <TouchableHighlight
               style={[style.paddingX16, style.paddingY16, style.borderBottom]}
               underlayColor="#ddd"
-              onPress={handleReset}
+              onPress={() => setModalVisible(true)}
             >
               <Text>
                 Reset{' '}
@@ -133,6 +138,48 @@ export default function Header({ navigation, handleRerender, donated }) {
           )}
         </View>
       )}
+
+      {/* Modal */}
+      <View style={styles.centeredView}>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.')
+            setModalVisible(!modalVisible)
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>
+                Bạn muốn xóa toàn bộ giao dịch?
+              </Text>
+              <Text style={styles.modalText}>
+                Hành động này không thể khôi phục!
+              </Text>
+              <View style={[styles.flexRow]}>
+                <Pressable
+                  style={[
+                    styles.button,
+                    styles.buttonDanger,
+                    { marginRight: 50 },
+                  ]}
+                  onPress={() => handleReset()}
+                >
+                  <Text style={styles.textStyle}>Xóa</Text>
+                </Pressable>
+                <Pressable
+                  style={[styles.button, styles.buttonClose]}
+                  onPress={() => setModalVisible(false)}
+                >
+                  <Text style={styles.textStyle}>Hủy</Text>
+                </Pressable>
+              </View>
+            </View>
+          </View>
+        </Modal>
+      </View>
     </>
   )
 }

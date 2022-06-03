@@ -9,6 +9,9 @@ import {
   StyleSheet,
   ActivityIndicator,
   ToastAndroid,
+  Alert,
+  Modal,
+  Pressable,
 } from 'react-native'
 
 import style from '../../assets/css/style.css'
@@ -16,13 +19,9 @@ const styles = StyleSheet.create(style)
 
 import Hr from './Hr'
 
-export default function Transaction({
-  navigation,
-  handleRerender,
-  item,
-  setModalVisible,
-}) {
+export default function Transaction({ navigation, handleRerender, item }) {
   const [isLoading, setLoading] = useState(false)
+  const [modalVisible, setModalVisible] = useState(false)
 
   function showToastMessage() {
     ToastAndroid.show(
@@ -32,19 +31,19 @@ export default function Transaction({
   }
 
   function handleDelete() {
-    setModalVisible(true)
-    // setLoading(true)
-    // fetch(
-    //   `https://62875b567864d2883e8388b6.mockapi.io/api/v1/Transaction/${item.id}`,
-    //   {
-    //     method: 'DELETE',
-    //   }
-    // )
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //     setLoading(false)
-    //     handleRerender()
-    //   })
+    setLoading(true)
+    fetch(
+      `https://62875b567864d2883e8388b6.mockapi.io/api/v1/Transaction/${item.id}`,
+      {
+        method: 'DELETE',
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setLoading(false)
+        setModalVisible(false)
+        handleRerender()
+      })
   }
   return (
     <>
@@ -59,7 +58,7 @@ export default function Transaction({
           <Text>{item.id}</Text>
           <Text>{item.amount}</Text>
           <Text>{item.method ? 'Paypal' : 'Direct'}</Text>
-          <TouchableOpacity onPress={() => handleDelete()}>
+          <TouchableOpacity onPress={() => setModalVisible(true)}>
             {isLoading ? (
               <ActivityIndicator size="small" color="#27ae60" />
             ) : (
@@ -68,6 +67,48 @@ export default function Transaction({
           </TouchableOpacity>
         </View>
       </TouchableOpacity>
+      {/* Modal */}
+      <View style={styles.centeredView}>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.')
+            setModalVisible(!modalVisible)
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>
+                Bạn muốn xóa giao dịch số {item.id} -
+                {item.method ? ' Paypal' : ' Direct'} - {item.amount}
+              </Text>
+              <Text style={styles.modalText}>
+                Hành động này không thể khôi phục! Vẫn xóa?
+              </Text>
+              <View style={[styles.flexRow]}>
+                <Pressable
+                  style={[
+                    styles.button,
+                    styles.buttonDanger,
+                    { marginRight: 50 },
+                  ]}
+                  onPress={() => handleDelete()}
+                >
+                  <Text style={styles.textStyle}>Xóa</Text>
+                </Pressable>
+                <Pressable
+                  style={[styles.button, styles.buttonClose]}
+                  onPress={() => setModalVisible(false)}
+                >
+                  <Text style={styles.textStyle}>Hủy</Text>
+                </Pressable>
+              </View>
+            </View>
+          </View>
+        </Modal>
+      </View>
       <Hr></Hr>
     </>
   )

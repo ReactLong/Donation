@@ -104,7 +104,7 @@ export default function Home({ navigation }) {
 
   return (
     <SafeAreaView style={styles.flex1}>
-      <ScrollView
+      <View
         style={[styles.flex1, {}]}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -178,7 +178,7 @@ export default function Home({ navigation }) {
             </View>
           </View>
         </View>
-      </ScrollView>
+      </View>
     </SafeAreaView>
   )
 }
