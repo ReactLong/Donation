@@ -171,7 +171,10 @@ export default function Header({ navigation, handleRerender, donated }) {
                 </Pressable>
                 <Pressable
                   style={[styles.button, styles.buttonClose]}
-                  onPress={() => setModalVisible(false)}
+                  onPress={() => {
+                    setModalVisible(false)
+                    hideDialog()
+                  }}
                 >
                   <Text style={styles.textStyle}>Hủy</Text>
                 </Pressable>

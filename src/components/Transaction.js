@@ -67,6 +67,7 @@ export default function Transaction({ navigation, handleRerender, item }) {
           </TouchableOpacity>
         </View>
       </TouchableOpacity>
+
       {/* Modal */}
       <View style={styles.centeredView}>
         <Modal

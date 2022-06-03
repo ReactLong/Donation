@@ -1,6 +1,7 @@
 const css = {
   flexRow: {
     flexDirection: 'row',
+    alignItems: 'center',
   },
   flex1: {
     flex: 1,
@@ -137,7 +138,7 @@ const style = {
     elevation: 2,
   },
   buttonDanger: {
-    backgroundColor: '#c0392b',
+    backgroundColor: '#e74c3c',
   },
   buttonOpen: {
     backgroundColor: '#F194FF',
