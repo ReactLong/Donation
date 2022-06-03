@@ -5,10 +5,12 @@ import {
   TextInput,
   TouchableOpacity,
   ActivityIndicator,
+  ScrollView,
+  RefreshControl,
+  SafeAreaView,
 } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { useIsFocused } from '@react-navigation/native'
-import { StatusBar } from 'expo-status-bar'
 import { RadioButton, Text } from 'react-native-paper'
 import { ProgressBar, Colors } from 'react-native-paper'
 import NumberPicker from '../components/NumberPicker'
@@ -18,6 +20,10 @@ import Selector from '../components/Selector'
 import style from '../../assets/css/style.css'
 const styles = StyleSheet.create(style)
 
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout))
+}
+
 export default function Home({ navigation }) {
   const [checked, setChecked] = useState('PayPal')
   const [amount, setAmount] = useState(10000)
@@ -26,6 +32,8 @@ export default function Home({ navigation }) {
 
   const [isLoading, setLoading] = useState(false)
   const [rerender, setRerender] = useState(false)
+  const [refreshing, setRefreshing] = React.useState(false)
+
   const isFocused = useIsFocused()
   const handleRerender = () => {
     setRerender(!rerender)
@@ -52,6 +60,7 @@ export default function Home({ navigation }) {
 
   // handle donate
   const handleDonate = () => {
+    if (donated + donateAmount > amount) return
     setLoading(true)
     const body = {
       upvote: 0,
@@ -72,6 +81,12 @@ export default function Home({ navigation }) {
       })
   }
 
+  // refresh
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true)
+    wait(2000).then(() => setRefreshing(false))
+  }, [])
+
   // helper
   function toNumber(str) {
     if (str == '') return 0
@@ -85,75 +100,85 @@ export default function Home({ navigation }) {
       `donateAmount: ${donateAmount}`,
       `donated: ${donated}`
     )
-  }, [donated])
+  }, [checked, donated, amount, donateAmount])
 
   return (
-    <>
-      {/* Header */}
-      <Header navigation={navigation} handleRerender={handleRerender}></Header>
-      {/* Main app */}
-      <View style={styles.container}>
-        <StatusBar style="dark" />
-        <View style={styles.app}>
-          <Text style={styles.heading}>Welcome Homer</Text>
-          <View style={styles.main}>
-            {/* Main left */}
-            <View style={styles.mainLeft}>
-              <Text>Please Give Generously</Text>
-              <RadioButton.Group
-                onValueChange={(newValue) => setChecked(newValue)}
-                value={checked}
-              >
-                <View style={style.radioArea}>
-                  <RadioButton value="PayPal" style={styles.radio} />
-                  <Text>PayPal</Text>
-                </View>
-                <View style={style.radioArea}>
-                  <RadioButton value="Direct" style={styles.radio} />
-                  <Text>Direct</Text>
-                </View>
-              </RadioButton.Group>
+    <SafeAreaView style={styles.flex1}>
+      <ScrollView
+        style={[styles.flex1, {}]}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        {/* Header */}
+        <Header
+          navigation={navigation}
+          handleRerender={handleRerender}
+          donated={donated}
+        ></Header>
+        {/* Main app */}
+        <View style={styles.container}>
+          <View style={styles.app}>
+            <Text style={styles.heading}>Welcome Homer</Text>
+            <View style={styles.main}>
+              {/* Main left */}
+              <View style={styles.mainLeft}>
+                <Text>Please Give Generously</Text>
+                <RadioButton.Group
+                  onValueChange={(newValue) => setChecked(newValue)}
+                  value={checked}
+                >
+                  <View style={style.radioArea}>
+                    <RadioButton value="PayPal" style={styles.radio} />
+                    <Text>PayPal</Text>
+                  </View>
+                  <View style={style.radioArea}>
+                    <RadioButton value="Direct" style={styles.radio} />
+                    <Text>Direct</Text>
+                  </View>
+                </RadioButton.Group>
+              </View>
+              {/* Main right */}
+              <View style={styles.mainRight}>
+                <Selector
+                  min={config.min}
+                  max={config.max}
+                  step={config.step}
+                  setter={setDonateAmount}
+                ></Selector>
+              </View>
             </View>
-            {/* Main right */}
-            <View style={styles.mainRight}>
-              <Selector
-                min={config.min}
-                max={config.max}
-                step={config.step}
-                setter={setDonateAmount}
-              ></Selector>
-            </View>
-          </View>
 
-          {/* App bottom */}
-          <View style={styles.appBottom}>
-            <View>
-              <ProgressBar progress={donated / amount} color={'#27ae60'} />
-            </View>
-            <View style={styles.amountArea}>
-              <Text>Amounts</Text>
-              <TextInput
-                value={amount}
-                onChangeText={(value) => setAmount(toNumber(value))}
-                placeholder="enter your amount"
-                style={styles.amountInput}
-              ></TextInput>
-            </View>
-            <View style={styles.totalArea}>
-              <TouchableOpacity onPress={() => handleDonate()}>
-                <Text style={styles.donateBtn}>
-                  {isLoading ? (
-                    <ActivityIndicator size="small" color="#27ae60" />
-                  ) : (
-                    'Donate'
-                  )}
-                </Text>
-              </TouchableOpacity>
-              <Text>Total so far ${amount - donated}</Text>
+            {/* App bottom */}
+            <View style={styles.appBottom}>
+              <View>
+                <ProgressBar progress={donated / amount} color={'#27ae60'} />
+              </View>
+              <View style={styles.amountArea}>
+                <Text>Amounts</Text>
+                <TextInput
+                  value={String(amount)}
+                  onChangeText={(value) => setAmount(toNumber(value))}
+                  placeholder="enter your amount"
+                  style={styles.amountInput}
+                ></TextInput>
+              </View>
+              <View style={styles.totalArea}>
+                <TouchableOpacity onPress={() => handleDonate()}>
+                  <Text style={styles.donateBtn}>
+                    {isLoading ? (
+                      <ActivityIndicator size="small" color="#27ae60" />
+                    ) : (
+                      'Donate'
+                    )}
+                  </Text>
+                </TouchableOpacity>
+                <Text>Total so far ${amount - donated}</Text>
+              </View>
             </View>
           </View>
         </View>
-      </View>
-    </>
+      </ScrollView>
+    </SafeAreaView>
   )
 }

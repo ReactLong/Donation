@@ -3,6 +3,9 @@ const css = {
     flexDirection: 'row',
     alignItems: 'center',
   },
+  flex1: {
+    flex: 1,
+  },
   input: {
     padding: 4,
     paddingLeft: 16,
@@ -14,11 +17,15 @@ const css = {
 }
 
 const style = {
+  flex1: {
+    ...css.flex1,
+  },
   container: {
     flex: 1,
     padding: 16,
   },
   header: {
+    marginTop: 40,
     flexDirection: 'row',
     backgroundColor: '#27ae60',
     height: 40,
@@ -104,6 +111,47 @@ const style = {
   borderBottom: {
     borderBottomWidth: 1,
     borderColor: '#999',
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: '#F194FF',
+  },
+  buttonClose: {
+    backgroundColor: '#2196F3',
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
   },
 }
 

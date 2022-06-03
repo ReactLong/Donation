@@ -8,12 +8,13 @@ import {
   StyleSheet,
   ActivityIndicator,
 } from 'react-native'
+import { StatusBar } from 'expo-status-bar'
 import { Entypo } from '@expo/vector-icons'
 
 import style from '../../assets/css/style.css'
 const styles = StyleSheet.create(style)
 
-export default function Header({ navigation, handleRerender }) {
+export default function Header({ navigation, handleRerender, donated }) {
   const [visible, setVisible] = React.useState(false)
   const [isLoading, setLoading] = useState(false)
 
@@ -55,6 +56,8 @@ export default function Header({ navigation, handleRerender }) {
 
   return (
     <>
+      <StatusBar style="dark" />
+
       {/* Left header logo */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.navigate('Home')}>
@@ -73,51 +76,70 @@ export default function Header({ navigation, handleRerender }) {
       </View>
 
       {/* Right menu dialog */}
-      <View
-        style={[{ display: visible ? 'block' : 'none' }, innerStyle.dialogMenu]}
-      >
-        <TouchableHighlight
-          style={[style.paddingX16, style.paddingY16, style.borderBottom]}
-          underlayColor="#ddd"
-          onPress={hideDialog}
-        >
-          <Text>Settings</Text>
-        </TouchableHighlight>
-        <TouchableHighlight
-          style={[style.paddingX16, style.paddingY16, style.borderBottom]}
-          underlayColor="#ddd"
-          onPress={handleReset}
-        >
-          <Text>
-            Reset{' '}
-            {isLoading ? (
-              <ActivityIndicator
-                style={styles.paddingX16}
-                size={15}
-                color="#27ae60"
-              />
-            ) : (
-              ''
-            )}
-          </Text>
-        </TouchableHighlight>
-        <TouchableHighlight
-          style={[style.paddingX16, style.paddingY16, style.borderBottom]}
-          underlayColor="#ddd"
-          onPress={() => {
-            navigation.navigate('Report')
-            hideDialog()
-          }}
-        >
-          <Text>Report</Text>
-        </TouchableHighlight>
-      </View>
+      {visible && (
+        <View style={[innerStyle.dialogMenu]}>
+          <TouchableHighlight
+            style={[style.paddingX16, style.paddingY16, style.borderBottom]}
+            underlayColor="#ddd"
+            onPress={() => {
+              hideDialog()
+              navigation.navigate('Home')
+            }}
+          >
+            <Text>Donation</Text>
+          </TouchableHighlight>
+          <TouchableHighlight
+            style={[style.paddingX16, style.paddingY16, style.borderBottom]}
+            underlayColor="#ddd"
+            onPress={() => {
+              hideDialog()
+              navigation.navigate('Test')
+            }}
+          >
+            <Text>Test</Text>
+          </TouchableHighlight>
+
+          {donated !== 0 && (
+            <TouchableHighlight
+              style={[style.paddingX16, style.paddingY16, style.borderBottom]}
+              underlayColor="#ddd"
+              onPress={handleReset}
+            >
+              <Text>
+                Reset{' '}
+                {isLoading ? (
+                  <ActivityIndicator
+                    style={styles.paddingX16}
+                    size={15}
+                    color="#27ae60"
+                  />
+                ) : (
+                  ''
+                )}
+              </Text>
+            </TouchableHighlight>
+          )}
+          {donated !== 0 && (
+            <TouchableHighlight
+              style={[style.paddingX16, style.paddingY16, style.borderBottom]}
+              underlayColor="#ddd"
+              onPress={() => {
+                navigation.navigate('Report')
+                hideDialog()
+              }}
+            >
+              <Text>Report</Text>
+            </TouchableHighlight>
+          )}
+        </View>
+      )}
     </>
   )
 }
 
 const innerStyle = StyleSheet.create({
   dialogMenu: {
+    marginTop: 40,
     position: 'absolute',
     top: 0,
     right: 0,

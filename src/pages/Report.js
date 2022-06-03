@@ -6,6 +6,9 @@ import {
   Button,
   StyleSheet,
   FlatList,
+  Alert,
+  Modal,
+  Pressable,
 } from 'react-native'
 
 import Header from '../components/Header'
@@ -17,6 +20,8 @@ const styles = StyleSheet.create(style)
 
 export default function Report({ navigation }) {
   const [rerender, setRerender] = useState(false)
+  const [modalVisible, setModalVisible] = useState(false)
+
   const handleRerender = () => {
     setRerender(!rerender)
   }
@@ -29,16 +34,18 @@ export default function Report({ navigation }) {
 
   return (
     <>
-      <Header navigation={navigation}></Header>
+      <Header navigation={navigation} handleRerender={handleRerender}></Header>
       <View
         style={[styles.flexRow, styles.paddingY4, styles.justifyContentAround]}
       >
         <Text style={innerStyles.thead}>Upvotes</Text>
         <Text style={innerStyles.thead}>Amount</Text>
         <Text style={innerStyles.thead}>Method</Text>
-        <Text></Text>
+        <Text style={innerStyles.thead}></Text>
       </View>
       <Hr></Hr>
+
+      {/* Table */}
       <ScrollView>
         {transactions.map((item, index) => (
           <Transaction
@@ -46,9 +53,36 @@ export default function Report({ navigation }) {
             navigation={navigation}
             item={item}
             key={index}
+            setModalVisible={setModalVisible}
           ></Transaction>
         ))}
       </ScrollView>
+
+      {/* Modal */}
+      <View style={styles.centeredView}>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.')
+            setModalVisible(!modalVisible)
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>Hello World!</Text>
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setModalVisible(!modalVisible)}
+              >
+                <Text style={styles.textStyle}>Hide Modal</Text>
+              </Pressable>
+            </View>
+          </View>
+        </Modal>
+        <Pressable style={[styles.button, styles.buttonOpen]}></Pressable>
+      </View>
     </>
   )
 }
