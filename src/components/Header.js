@@ -93,17 +93,6 @@ export default function Header({ navigation, handleRerender, donated }) {
           >
             <Text>Donation</Text>
           </TouchableHighlight>
-          <TouchableHighlight
-            style={[style.paddingX16, style.paddingY16, style.borderBottom]}
-            underlayColor="#ddd"
-            onPress={() => {
-              hideDialog()
-              navigation.navigate('Test')
-            }}
-          >
-            <Text>Test</Text>
-          </TouchableHighlight>
-
           {donated !== 0 && (
             <TouchableHighlight
               style={[style.paddingX16, style.paddingY16, style.borderBottom]}
@@ -111,10 +100,10 @@ export default function Header({ navigation, handleRerender, donated }) {
               onPress={() => setModalVisible(true)}
             >
               <Text>
-                Reset{' '}
+                Reset
                 {isLoading ? (
                   <ActivityIndicator
-                    style={styles.paddingX16}
+                    style={styles.paddingX4}
                     size={15}
                     color="#27ae60"
                   />

@@ -13,7 +13,6 @@ import React, { useState, useEffect } from 'react'
 import { useIsFocused } from '@react-navigation/native'
 import { RadioButton, Text } from 'react-native-paper'
 import { ProgressBar, Colors } from 'react-native-paper'
-import NumberPicker from '../components/NumberPicker'
 import Header from '../components/Header'
 import Selector from '../components/Selector'
 
@@ -42,7 +41,7 @@ export default function Home({ navigation }) {
   const config = {
     min: 0,
     max: 1000,
-    step: 50,
+    step: 1,
   }
 
   // init

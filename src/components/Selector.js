@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from 'react'
-
+import ScrollPicker from 'react-native-wheel-scrollview-picker'
 import { View, Text } from 'react-native'
-
-// import { Picker } from '@react-native-picker/picker'
-import style from '../../assets/css/style.css'
-
-const Selector = ({ min = 0, max = 100, step = 25, setter }) => {
-  const [selected, setSelected] = useState()
+function Selector({ min = 0, max = 100, step = 25, setter }) {
   const [values, setValues] = useState([])
 
   // init
@@ -15,26 +10,33 @@ const Selector = ({ min = 0, max = 100, step = 25, setter }) => {
     for (let i = min; i <= max; i += step) {
       temp.push(i)
     }
-    setSelected(max)
-    setValues((value) => [...temp])
+    setValues((value) => [...temp, ...temp])
+    setter(max)
   }, [])
 
-  // handle side effect
-  useEffect(() => {
-    setter(Number(selected))
-  }, [selected])
-
   return (
-    <></>
-    // <Picker
-    //   selectedValue={selected}
-    //   onValueChange={(itemValue) => setSelected(itemValue)}
-    //   style={style.donateBtn}
-    // >
-    //   {values.map((value, index) => (
-    //     <Picker.Item label={value} value={value} key={index} />
-    //   ))}
-    // </Picker>
+    <ScrollPicker
+      dataSource={values}
+      renderItem={(data) => {
+        return (
+          <View>
+            <Text>{data}</Text>
+          </View>
+        )
+      }}
+      selectedIndex={max}
+      onValueChange={(data) => {
+        console.log(data)
+        setter(Number(data))
+      }}
+      wrapperHeight={180}
+      wrapperWidth={150}
+      wrapperColor="#FFFFFF"
+      itemHeight={60}
+      highlightColor="black"
+      highlightBorderWidth={2}
+      itemTextStyle={{ color: 'black' }}
+    />
   )
 }
 
