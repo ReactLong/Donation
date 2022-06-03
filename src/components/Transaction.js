@@ -58,7 +58,10 @@ export default function Transaction({ navigation, handleRerender, item }) {
           <Text>{item.id}</Text>
           <Text>{item.amount}</Text>
           <Text>{item.method ? 'Paypal' : 'Direct'}</Text>
-          <TouchableOpacity onPress={() => setModalVisible(true)}>
+          <TouchableOpacity
+            style={styles.paddingX16}
+            onPress={() => setModalVisible(true)}
+          >
             {isLoading ? (
               <ActivityIndicator size="small" color="#27ae60" />
             ) : (
