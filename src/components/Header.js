@@ -40,6 +40,8 @@ export default function Header({ navigation, handleRerender, donated }) {
       hideDialog()
       return
     }
+
+    // foreach
     transactions.forEach(async (transaction) => {
       const deleteResponse = await fetch(
         `https://62875b567864d2883e8388b6.mockapi.io/api/v1/Transaction/${transaction.id}`,
@@ -55,6 +57,7 @@ export default function Header({ navigation, handleRerender, donated }) {
         hideDialog()
         handleRerender()
         setModalVisible(false)
+        navigation.navigate('Home')
       }
     })
   }
