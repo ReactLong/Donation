@@ -43,8 +43,8 @@ const style = {
   main: {
     flexDirection: 'row',
     flex: 1,
-    marginTop: 200,
-    marginBottom: 200,
+    marginTop: 227,
+    marginBottom: 227,
   },
   mainLeft: {
     flex: 1,
