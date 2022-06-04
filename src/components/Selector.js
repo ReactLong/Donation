@@ -7,10 +7,11 @@ function Selector({ min = 0, max = 100, step = 25, setter }) {
   // init
   useEffect(() => {
     let temp = []
-    for (let i = min; i <= max; i += step) {
+    for (let i = min; i <= 100; i += step) {
+      temp.unshift(max - i)
       temp.push(i)
     }
-    setValues((value) => [...temp, ...temp])
+    setValues((value) => [...temp])
     setter(max)
   }, [])
 
@@ -24,7 +25,7 @@ function Selector({ min = 0, max = 100, step = 25, setter }) {
           </View>
         )
       }}
-      selectedIndex={max}
+      selectedIndex={100}
       onValueChange={(data) => {
         console.log(data)
         setter(Number(data))

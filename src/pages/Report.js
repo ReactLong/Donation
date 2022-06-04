@@ -9,6 +9,8 @@ import {
   Alert,
   Modal,
   Pressable,
+  RefreshControl,
+  SafeAreaView,
 } from 'react-native'
 
 import Header from '../components/Header'
@@ -18,8 +20,19 @@ import Hr from '../components/Hr'
 import style from '../../assets/css/style.css'
 const styles = StyleSheet.create(style)
 
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout))
+}
+
 export default function Report({ navigation }) {
   const [rerender, setRerender] = useState(false)
+  const [refreshing, setRefreshing] = React.useState(false)
+
+  // refresh
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true)
+    wait(2000).then(() => setRefreshing(false))
+  }, [])
 
   const handleRerender = () => {
     setRerender(!rerender)
@@ -29,7 +42,7 @@ export default function Report({ navigation }) {
     fetch('https://62875b567864d2883e8388b6.mockapi.io/api/v1/Transaction')
       .then((res) => res.json())
       .then((data) => setTransactions(data))
-  }, [rerender])
+  }, [rerender, refreshing])
 
   return (
     <>
@@ -45,7 +58,12 @@ export default function Report({ navigation }) {
       <Hr></Hr>
 
       {/* Table */}
-      <ScrollView>
+      <ScrollView
+        style={[styles.flex1, {}]}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         {transactions.map((item, index) => (
           <Transaction
             handleRerender={handleRerender}

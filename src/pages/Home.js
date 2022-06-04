@@ -163,7 +163,10 @@ export default function Home({ navigation }) {
                 ></TextInput>
               </View>
               <View style={styles.totalArea}>
-                <TouchableOpacity onPress={() => handleDonate()}>
+                <TouchableOpacity
+                  onPress={() => handleDonate()}
+                  disabled={isLoading}
+                >
                   <Text style={styles.donateBtn}>
                     {isLoading ? (
                       <ActivityIndicator size="small" color="#27ae60" />
